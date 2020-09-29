@@ -4,7 +4,7 @@ import './App.css';
 
 import Header from '../components/templates/Header'
 import Menu from '../components/templates/Menu'
-import Routes from './Routes'
+import Section from '../components/templates/Section'
 import Footer from '../components/templates/Footer'
 
 export default function App() {
@@ -14,7 +14,7 @@ export default function App() {
       <BrowserRouter>
         <Header />
         <Menu />
-        <Routes />
+        <Section />
         <Footer />
       </BrowserRouter>
     </div>

@@ -5,7 +5,8 @@ export default function Mobiles() {
 
     return (
         <section className="mobiles">
-            Mobiles Section
+            <i class="fas fa-hammer fa-5x"></i>
+            <h1>Under Construction</h1>
         </section>
     )
 }

@@ -3,8 +3,8 @@ import './Home.css'
 
 export default function Home() {
     return (
-        <section>
-            Home
+        <section className="home">
+            Home Page
         </section>
     )
 }
