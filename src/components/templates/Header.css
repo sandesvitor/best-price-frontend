@@ -38,3 +38,14 @@ header .bottom-menu {
 
     padding: 10px;
 }
+
+@media (max-width: 830px) {
+    .top-menu input {
+        width: 250px;
+    }
+}
+@media (max-width: 480px) {
+    .top-menu input {
+        display: none;
+    }
+}
