@@ -12,7 +12,7 @@ export default props =>
 
         <Link to="/desktops">
             <div className="icon-button">
-                <i class="fas fa-desktop fa-3x"></i>
+                <i className="fas fa-desktop fa-3x"></i>
             </div>
         </Link>
 

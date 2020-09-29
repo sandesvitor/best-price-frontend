@@ -1,6 +1,13 @@
-section.products-section {
+section.hardwares {
+    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+}
+
+section.hardwares .loading-spinner {
+    height: 150px;
+    width: 150px;
 }
