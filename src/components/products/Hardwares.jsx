@@ -45,10 +45,12 @@ export default function Hardwares() {
 
     return (
         <section className="hardwares">
+
             {loading
                 ? renderProduct()
                 : <Spinner className="loading-spinner" animation="border" variant="danger" />
             }
+
         </section>
     )
 }

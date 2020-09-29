@@ -1,7 +1,10 @@
 section.main-section {
+    width: 100vw;
+    max-width: 100%;
     min-height: 50vh;
     padding-bottom: 40px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    /* justify-content: center; */
+    /* align-items: center; */
 }

@@ -3,4 +3,6 @@ section.home {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border: 10px solid green;
+    width: 100%;
 }
