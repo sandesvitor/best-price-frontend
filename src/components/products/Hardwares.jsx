@@ -28,8 +28,10 @@ export default function Hardwares() {
             return (
                 <Product key={index}
                     title={product.name}
+                    price={(product.price)}
                     retailer={product.retailer}
                     imageUrl={product.imageUrl}
+                    link={product.link}
                 />
             )
         })
