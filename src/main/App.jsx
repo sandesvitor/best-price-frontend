@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom'
 import './App.css';
-import axios from 'axios'
 
-function App() {
-  const [product, setProduct] = useState([{}])
+import Header from '../components/templates/Header'
+import Menu from '../components/templates/Menu'
+import Routes from './Routes'
+import Footer from '../components/templates/Footer'
 
-  useEffect(() => {
-
-    axios.get('https://api-bestprice.herokuapp.com/products')
-      .then(res => res.data)
-      .then(data => console.log(data))
-      .catch(console.log)
-
-  }, [])
+export default function App() {
 
   return (
-    <h1>Hello World</h1>
+    <div className="app">
+      <BrowserRouter>
+        <Header />
+        <Menu />
+        <Routes />
+        <Footer />
+      </BrowserRouter>
+    </div>
   )
 }
 
-export default App;
