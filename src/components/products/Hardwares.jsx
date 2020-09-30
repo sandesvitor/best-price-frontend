@@ -52,14 +52,15 @@ export default function Hardwares() {
 
     function renderManufacturers() {
         let uniqueManufacturers = []
-        products.filter(product => uniqueManufacturers.push(product.manufacturer))
+        initialProducts.filter(product => uniqueManufacturers.push(product.manufacturer))
         uniqueManufacturers = [...new Set(uniqueManufacturers)]
-        return uniqueManufacturers.map(manufacturer => {
+        return uniqueManufacturers.map((manufacturer, index) => {
             return (
-                <span>
+                <span key={index}>
                     <input type="checkbox"
                         name={manufacturer}
-                        value={manufacturer} /> {manufacturer}
+                        value={manufacturer}
+                    /> {manufacturer}
                 </span>
             )
         })
@@ -68,9 +69,15 @@ export default function Hardwares() {
 
     function applyFilters(e) {
         e.preventDefault()
-        const limitedData = initialProducts.filter(product => product.price < range)
+
+        const inputs = document.querySelectorAll('.sidebar .manufacturers input')
+        const manufacturers = Array.from(inputs).filter(f => f.checked === true).map(m => m.value)
+
+        const priceLimiter = range
+
+        const limitedData = initialProducts.filter(product => product.price < priceLimiter && manufacturers.includes(product.manufacturer))
+
         setProducts(limitedData)
-        console.log(products)
     }
 
 
