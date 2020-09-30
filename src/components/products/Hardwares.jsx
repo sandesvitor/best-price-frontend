@@ -20,6 +20,7 @@ export default function Hardwares() {
                 .then(data => {
                     const maxValue = Math.max.apply(Math, data.map(product => product.price))
                     setMaxPrice(parseInt(maxValue) + 1)
+                    setRange(parseInt(maxValue) + 1)
                     setInitialProducts(data)
                     setProducts(data)
                 })
