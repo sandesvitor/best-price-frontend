@@ -49,7 +49,24 @@ export default function Hardwares() {
         fetchData()
     }, [])
 
-    function renderByMaxPrice(e) {
+
+    function renderManufacturers() {
+        let uniqueManufacturers = []
+        products.filter(product => uniqueManufacturers.push(product.manufacturer))
+        uniqueManufacturers = [...new Set(uniqueManufacturers)]
+        return uniqueManufacturers.map(manufacturer => {
+            return (
+                <span>
+                    <input type="checkbox"
+                        name={manufacturer}
+                        value={manufacturer} /> {manufacturer}
+                </span>
+            )
+        })
+    }
+
+
+    function applyFilters(e) {
         e.preventDefault()
         const limitedData = initialProducts.filter(product => product.price < range)
         setProducts(limitedData)
@@ -62,13 +79,13 @@ export default function Hardwares() {
 
             <div className="sidebar-container">
                 <aside className="sidebar">
+
                     <div className="category">
-                        Hadwares
+                        <h1>Hadwares</h1>
                     </div>
-
                     <hr />
-
                     <div className="price-range">
+                        <h2>Maximum Price</h2>
                         R${
                             range
                                 .toString()
@@ -86,10 +103,17 @@ export default function Hardwares() {
                             step="1"
                         />
                     </div>
+                    <hr />
+                    <div className="manufacturers">
+                        <h2>Manufacturers</h2>
+                        {renderManufacturers()}
+                    </div>
+                    <hr />
                     <div className="sidebar-btn"
-                        onClick={e => renderByMaxPrice(e)}>
+                        onClick={e => applyFilters(e)}>
                         Apply
                     </div>
+
                 </aside>
             </div>
 
