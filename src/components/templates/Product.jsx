@@ -13,14 +13,17 @@ export default function Product(props) {
 
                 <div className="product-img">
                     <img
-                        src={props.imageUrl}
+                        src={props.imageUrl ? props.imageUrl : require('../../assets/fail_request_image.png')}
                         alt={props.retailer}
                     />
                 </div>
 
                 <div className="product-price">
                     {props.price !== null
-                        ? `R$ ${props.price}`
+                        ? `R$ ${props.price.toFixed(2)
+                            .toString()
+                            .replace('.', ',')
+                            .replace(/[0-9](?=(?:[0-9]{3})+(?![0-9]))/g, '$&.')}`
                         : "Sem preço no momento"
                     }
                 </div>
