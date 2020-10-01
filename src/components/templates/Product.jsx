@@ -4,8 +4,10 @@ import './Product.css'
 
 export default function Product(props) {
 
+
     return (
         <div className="product-box">
+
             <a className="product-link" href={props.link} target="_blank" rel="noopener noreferrer">
                 <div className="product-title">
                     {props.title}
@@ -26,6 +28,16 @@ export default function Product(props) {
                             .replace(/[0-9](?=(?:[0-9]{3})+(?![0-9]))/g, '$&.')}`
                         : "Sem preço no momento"
                     }
+                </div>
+
+                {/* ainda está estárica! */}
+                <div className="product-rating">
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+
                 </div>
 
                 <div className="product-retailer">
