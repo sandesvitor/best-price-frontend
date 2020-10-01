@@ -5,6 +5,8 @@ import { Spinner } from 'react-bootstrap'
 
 import Product from '../templates/Product'
 
+const baseUrl = 'https://api-bestprice.herokuapp.com/products'
+
 export default function Hardwares() {
     const [initialProducts, setInitialProducts] = useState([])
     const [products, setProducts] = useState([])
@@ -15,7 +17,7 @@ export default function Hardwares() {
     const fetchData = async () => {
         try {
             await axios
-                .get('https://api-bestprice.herokuapp.com/products')
+                .get(baseUrl)
                 .then(res => res.data)
                 .then(data => {
                     const maxValue = Math.max.apply(Math, data.map(product => product.price))
@@ -37,7 +39,8 @@ export default function Hardwares() {
             return (
                 <Product key={index}
                     title={product.name}
-                    price={(product.price)}
+                    price={product.price}
+                    stars={product.stars}
                     retailer={product.retailer}
                     imageUrl={product.imageUrl}
                     link={product.link}
@@ -72,7 +75,9 @@ export default function Hardwares() {
         e.preventDefault()
 
         const inputs = document.querySelectorAll('.sidebar .manufacturers input')
-        const manufacturers = Array.from(inputs).filter(f => f.checked === true).map(m => m.value)
+        const manufacturers = Array.from(inputs)
+            .filter(f => f.checked === true)
+            .map(m => m.value)
 
         const priceLimiter = range
 

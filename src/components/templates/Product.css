@@ -43,7 +43,7 @@
 
 .product-link .product-img {
     border: none;
-    height: 45%;
+    height: 40%;
     width: 100%;
     padding: 10px;
     display: flex;
@@ -53,7 +53,7 @@
 }
 
 .product-link .product-img img {
-    width: 200px;
+    height: 120px;
 }
 
 .product-link .product-price {
@@ -62,7 +62,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.1em;
+    font-size: 0.9em;
     font-weight: 600;
     color: #1daa5a;
 }
