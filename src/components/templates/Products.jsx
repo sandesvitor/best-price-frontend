@@ -58,7 +58,7 @@ export default function Products(props) {
         const fetchData = async () => {
             const price = await axios(`${baseUrl}/meta/max`)
             const allManufacturers = await axios(`${baseUrl}/meta/man`)
-            const initProducts = await axios(`${baseUrl}?mp=4000&sr=4&pl=30`)
+            const initProducts = await axios(`${baseUrl}?mp=3500&sr=4&pl=30`)
 
             setMaxPrice(price.data + 1)
             setManufacturers(allManufacturers.data)
