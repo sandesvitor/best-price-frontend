@@ -72,6 +72,12 @@ section.products aside.sidebar .order-by-price {
     display: flex;
     flex-direction: column;
     align-self: flex-start;
+    padding-bottom: 20px;
+}
+section.products aside.sidebar .products-per-page {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
     /* padding-bottom: 20px; */
 }
 

@@ -12,7 +12,6 @@ export default function Products(props) {
     const [products, setProducts] = useState(null)
     const [manufactures, setManufacturers] = useState(null)
 
-    const [pagination, setPagination] = useState(30)
     const [rating, setRating] = useState(0)
     const [maxPrice, setMaxPrice] = useState(0)
     const [range, setRange] = useState(0)
@@ -59,7 +58,7 @@ export default function Products(props) {
         const fetchData = async () => {
             const price = await axios(`${baseUrl}/meta/max`)
             const allManufacturers = await axios(`${baseUrl}/meta/man`)
-            const initProducts = await axios(`${baseUrl}?mp=4000`)
+            const initProducts = await axios(`${baseUrl}?mp=4000&sr=4&pl=30`)
 
             setMaxPrice(price.data + 1)
             setManufacturers(allManufacturers.data)
@@ -72,6 +71,7 @@ export default function Products(props) {
     }, [])
 
     useEffect(() => {
+        console.log(queryString)
         const fetchData = async () => {
             const filteredProducts = await axios(`${baseUrl}${queryString}`)
             setProducts(filteredProducts.data)
@@ -128,6 +128,15 @@ export default function Products(props) {
                             <option value="asc">Crescente</option>
                         </select>
                     </div>
+                    <div className="products-per-page">
+                        <h2>Produtos por Página:</h2>
+                        <select name="productsInPage">
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
                     <div className="manufacturers">
                         <h2>Fabricantes</h2>
                         {renderManufacturersCheckboxes()}
@@ -142,15 +151,22 @@ export default function Products(props) {
                             })
                             let qRange = parseInt(range) === 0 ? '' : `&mp=${parseInt(range)}`
 
-                            let selectedValue = document.querySelector('.order-by-price select').value
-                            let qOrderByPrice = selectedValue === 'desc' ? `&ob_p=0` : `&ob_p=1`
+                            let selectedValueOrderByPrice = document.querySelector('.order-by-price select').value
+                            let qOrderByPrice = selectedValueOrderByPrice === 'desc' ? `&ob_p=0` : `&ob_p=1`
+
+                            let selectedValueProducsPerPage = document.querySelector('.products-per-page select').value
+                            let qProductsPerPage = `pl=${selectedValueProducsPerPage}`
+
+                            let qRating = `&sr=${rating}`
 
                             // IMPLEMENTAR MAIS ESSES DOIS FILTROS >>>
                             // let qRetailer = `&rt=(...)` ---> precisa aplicar array!!! 
-                            // let qRating = `&sr=${rating}`
 
-                            let query = `?pl=${pagination}` + qRange + mChumk + qOrderByPrice
-
+                            let query = `?${qProductsPerPage}`
+                                + qRange
+                                + mChumk
+                                + qOrderByPrice
+                                + qRating
 
                             setQueryString(query)
                         }}>

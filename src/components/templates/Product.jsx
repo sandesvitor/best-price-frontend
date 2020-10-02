@@ -12,15 +12,14 @@ export default function Product(props) {
         const stars = props.stars
         if (stars !== null) {
             let starUnity = parseInt(stars)
-            let starDecimal = !parseInt(stars.split('.')[1]) ? 0 : parseInt(stars.split('.')[1])
+            let isDecimal = stars % 1 !== 0
 
             for (let i = 0; i < 5; i++) {
                 if (i < starUnity) {
                     classArray.push('fas fa-star')
-                    continue
-                } else if (starDecimal !== 0) {
+                } else if (isDecimal) {
                     classArray.push('fas fa-star-half-alt')
-                    starDecimal = 0
+                    isDecimal = !isDecimal
                 } else {
                     classArray.push('far fa-star')
                 }
