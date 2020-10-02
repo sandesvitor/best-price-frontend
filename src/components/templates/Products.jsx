@@ -12,7 +12,7 @@ export default function Products(props) {
     const [products, setProducts] = useState(null)
     const [manufactures, setManufacturers] = useState(null)
 
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(5)
     const [maxPrice, setMaxPrice] = useState(0)
     const [range, setRange] = useState(0)
 
@@ -80,6 +80,20 @@ export default function Products(props) {
         fetchData()
     }, [queryString])
 
+    function handleSelectedStars(value) {
+        const stars = document.querySelectorAll('.price-rating .stars')
+        stars.forEach(star => {
+            if (star.getAttribute("value") === value) {
+                star.classList.add('selected')
+            } else {
+                star.classList.remove('selected')
+            }
+
+        })
+
+        setRating(parseInt(value))
+    }
+
     return (
         <section className="products">
 
@@ -110,16 +124,51 @@ export default function Products(props) {
                     </div>
                     <div className="price-rating">
                         <h2>Rating do Produto</h2>
-                        <span>☆{rating}</span>
-                        <input
-                            type="range"
-                            min="0" max="5"
-                            value={rating}
-                            onChange={e => {
-                                setRating(e.target.value)
-                            }}
-                            step="1"
-                        />
+                        <div className="stars"
+                            value="1"
+                            onClick={() => handleSelectedStars("1")}>
+                            <i className="fas fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                        </div>
+                        <div className="stars"
+                            value="2"
+                            onClick={() => handleSelectedStars("2")}>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                        </div>
+                        <div className="stars"
+                            value="3"
+                            onClick={() => handleSelectedStars("3")}>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                        </div>
+                        <div className="stars"
+                            value="4"
+                            onClick={() => handleSelectedStars("4")}>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="far fa-star"></i>
+                        </div>
+                        <div className="stars"
+                            value="5"
+                            onClick={e => handleSelectedStars("5")}>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                        </div>
                     </div>
                     <div className="order-by-price">
                         <h2>Ordenar por preço:</h2>

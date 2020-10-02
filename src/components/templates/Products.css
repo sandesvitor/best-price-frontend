@@ -62,10 +62,26 @@ section.products aside.sidebar .price-rating {
     flex-direction: column;
     align-self: flex-start;
     padding-bottom: 20px;
+    transition: 0.5s;
 }
 
-section.products aside.sidebar .price-rating input {
-    width: 200px;
+section.products aside.sidebar .price-rating .stars {
+    padding: 5px 0px;
+    transition: 0.5s;
+}
+
+section.products aside.sidebar .price-rating .stars.selected i {
+    color: #80808d;
+}
+
+section.products aside.sidebar .price-rating .stars:hover {
+    transition: 0.5s;
+    transform: scale(0.95);
+}
+section.products aside.sidebar .price-rating .stars i {
+    padding: 1px;
+    color: #ffd700;
+    cursor: pointer;
 }
 
 section.products aside.sidebar .order-by-price {
@@ -86,6 +102,26 @@ section.products aside.sidebar .manufacturers {
     flex-direction: column;
     align-self: flex-start;
     padding-bottom: 20px;
+}
+
+aside.sidebar .sidebar-btn {
+    align-self: flex-start;
+    margin-top: 30px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #0000002c;
+
+    cursor: pointer;
+
+    font-weight: 400;
+    font-size: 1.3em;
+}
+
+aside.sidebar .sidebar-btn:active {
+    transform: scale(0.95);
 }
 
 @media (max-width: 630px) {
