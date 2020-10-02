@@ -72,8 +72,6 @@ export default function Products(props) {
     }, [])
 
     useEffect(() => {
-        console.debug(queryString)
-        console.debug(baseUrl)
         const fetchData = async () => {
             const filteredProducts = await axios(`${baseUrl}${queryString}`)
             setProducts(filteredProducts.data)
