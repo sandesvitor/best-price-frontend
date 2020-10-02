@@ -91,3 +91,34 @@
 .product-link .product-retailer img {
     width: 120px;
 }
+
+@media (max-width: 630px) {
+    .product-box {
+        height: 200px;
+        width: 150px;
+    }
+
+    .product-link .product-title {
+        font-size: 0.8em;
+    }
+
+    .product-link .product-img {
+        height: 40%;
+    }
+
+    .product-link .product-img img {
+        height: 75px;
+    }
+
+    .product-link .product-price {
+        font-size: 0.7em;
+    }
+
+    .product-link .product-rating i {
+        transform: scale(0.6);
+    }
+
+    .product-link .product-retailer img {
+        width: 70px;
+    }
+}
