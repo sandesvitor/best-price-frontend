@@ -60,7 +60,7 @@ export default function Product(props) {
                 <div className="product-rating">
                     {starClasses.map((classUnity, index) => {
                         return (
-                            <i className={classUnity}></i>
+                            <i key={index} className={classUnity}></i>
                         )
                     })}
                 </div>

@@ -10,34 +10,53 @@ const baseUrl = 'http://localhost:5000/products'
 export default function Hardwares() {
 
     const [loaded, setLoaded] = useState(false)
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState(null)
+    const [manufactures, setManufacturers] = useState(null)
 
     const [maxPrice, setMaxPrice] = useState(0)
     const [range, setRange] = useState(0.00)
 
 
     const renderProduct = () => {
-        return products.map((product, index) => {
-            return (
-                <Product key={index}
-                    title={product.name}
-                    price={product.price}
-                    stars={product.stars}
-                    retailer={product.retailer}
-                    imageUrl={product.imageUrl}
-                    link={product.link}
-                />
-            )
-        })
+        if (products !== null) {
+            return products.map((product, index) => {
+                return (
+                    <Product key={index}
+                        title={product.name}
+                        price={product.price}
+                        stars={product.stars}
+                        retailer={product.retailer}
+                        imageUrl={product.imageUrl}
+                        link={product.link}
+                    />
+                )
+            })
+        }
     }
 
+    const renderManufacturersCheckboxes = () => {
+        if (manufactures !== null) {
+            return manufactures.map((manufacturer, index) => {
+                return (
+                    <span key={index}>
+                        <input type="checkbox"
+                            name={manufacturer}
+                            value={manufacturer}
+                        /> {manufacturer}
+                    </span>
+                )
+            })
+        }
+    }
     useEffect(() => {
 
         const fetchData = async () => {
-            const price = await axios(`${baseUrl}/max/`)
-            const initProducts = await axios(`${baseUrl}?mn=AMD&mp=4000&rt=Kabum&rt=Amazon&ob_d=0&pl=100`)
+            const price = await axios(`${baseUrl}/meta/max`)
+            const allManufacturers = await axios(`${baseUrl}/meta/man`)
+            const initProducts = await axios(`${baseUrl}?mp=4000`)
 
             setMaxPrice(price.data + 1)
+            setManufacturers(allManufacturers.data)
             setProducts(initProducts.data)
             setLoaded(true)
         }
@@ -74,6 +93,10 @@ export default function Hardwares() {
                             }}
                             step="1"
                         />
+                    </div>
+                    <div className="manufacturers">
+                        <h2>Manufacturers</h2>
+                        {renderManufacturersCheckboxes()}
                     </div>
 
                 </aside>
