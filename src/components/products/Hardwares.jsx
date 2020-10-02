@@ -5,7 +5,8 @@ import { Spinner } from 'react-bootstrap'
 
 import Product from '../templates/Product'
 
-const baseUrl = 'https://api-bestprice.herokuapp.com/products'
+// const baseUrl = 'https://api-bestprice.herokuapp.com/products'
+const baseUrl = 'http://localhost:3000/products'
 
 export default function Hardwares() {
     const [initialProducts, setInitialProducts] = useState([])
