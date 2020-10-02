@@ -81,3 +81,9 @@ section.products aside.sidebar .manufacturers {
     align-self: flex-start;
     padding-bottom: 20px;
 }
+
+@media (max-width: 630px) {
+    section.products aside.sidebar {
+        display: none;
+    }
+}
