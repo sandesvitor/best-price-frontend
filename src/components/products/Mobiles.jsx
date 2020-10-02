@@ -9,8 +9,8 @@ const baseUrl = 'http://localhost:5000/products'
 
 export default function Hardwares() {
 
-    const [loading, setLoading] = useState(false)
-    const [products, setProducts] = useState()
+    const [loaded, setLoaded] = useState(false)
+    const [products, setProducts] = useState([])
 
     const [maxPrice, setMaxPrice] = useState(0)
     const [range, setRange] = useState(0.00)
@@ -32,17 +32,18 @@ export default function Hardwares() {
     }
 
     useEffect(() => {
-        //let query = '?mn=ASUS&mn=Gigabyte&mp=2000&rt=Kabum&rt=Amazon&pl=15&ob_d=1')
 
         const fetchData = async () => {
             const price = await axios(`${baseUrl}/max/`)
-            const initProducts = await axios(`${baseUrl}?ob_d=1&pl=20`)
+            const initProducts = await axios(`${baseUrl}?mn=AMD&mp=4000&rt=Kabum&rt=Amazon&ob_d=0&pl=100`)
 
             setMaxPrice(price.data + 1)
             setProducts(initProducts.data)
+            setLoaded(true)
         }
 
         fetchData()
+
     }, [])
 
     return (
@@ -79,10 +80,10 @@ export default function Hardwares() {
             </div>
 
             <div className="products-container">
-                {/* {loading
+                {loaded
                     ? renderProduct()
                     : <Spinner className="loading-spinner" animation="border" variant="danger" />
-                } */}
+                }
             </div>
 
 
