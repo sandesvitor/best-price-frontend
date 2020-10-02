@@ -5,7 +5,6 @@ import { Spinner } from 'react-bootstrap'
 
 import Product from './Product'
 
-
 export default function Products(props) {
     const baseUrl = props.baseUrl
 
@@ -74,6 +73,7 @@ export default function Products(props) {
 
     useEffect(() => {
         console.debug(queryString)
+        console.debug(baseUrl)
         const fetchData = async () => {
             const filteredProducts = await axios(`${baseUrl}${queryString}`)
             setProducts(filteredProducts.data)
@@ -148,6 +148,7 @@ export default function Products(props) {
                             let qOrderByPrice = selectedValue === 'desc' ? `&ob_p=0` : `&ob_p=1`
 
                             // IMPLEMENTAR MAIS ESSES DOIS FILTROS >>>
+                            // let qRetailer = `&rt=(...)` ---> precisa aplicar array!!! 
                             // let qRating = `&sr=${rating}`
 
                             let query = `?pl=${pagination}` + qRange + mChumk + qOrderByPrice
