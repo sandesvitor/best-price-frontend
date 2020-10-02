@@ -5,101 +5,95 @@ import { Spinner } from 'react-bootstrap'
 
 import Product from '../templates/Product'
 
-// const baseUrl = 'https://api-bestprice.herokuapp.com/products'
-const baseUrl = 'http://localhost:3000/products'
+const baseUrl = 'http://localhost:5000/products'
 
 export default function Hardwares() {
-    const [initialProducts, setInitialProducts] = useState([])
-    const [products, setProducts] = useState([])
+
+    const [loaded, setLoaded] = useState(false)
+    const [products, setProducts] = useState(null)
+    const [manufactures, setManufacturers] = useState(null)
+
+    const [pagination, setPagination] = useState(30)
+    const [rating, setRating] = useState(0)
     const [maxPrice, setMaxPrice] = useState(0)
-    const [range, setRange] = useState(0.00)
-    const [loading, setLoading] = useState(false)
+    const [range, setRange] = useState(0)
 
-    const fetchData = async () => {
-        try {
-            await axios
-                .get(baseUrl)
-                .then(res => res.data)
-                .then(data => {
-                    const maxValue = Math.max.apply(Math, data.map(product => product.price))
-                    setMaxPrice(parseInt(maxValue) + 1)
-                    setRange(parseInt(maxValue) + 1)
-                    setInitialProducts(data)
-                    setProducts(data)
-                })
 
-            setLoading(true)
+    const [queryString, setQueryString] = useState('')
 
-        } catch (err) {
-            console.log(err)
+
+
+    const renderProduct = () => {
+        if (products !== null) {
+            return products.map((product, index) => {
+                return (
+                    <Product key={index}
+                        title={product.name}
+                        price={product.price}
+                        stars={product.stars}
+                        retailer={product.retailer}
+                        imageUrl={product.imageUrl}
+                        link={product.link}
+                    />
+                )
+            })
         }
     }
 
-    const renderProduct = () => {
-        return products.map((product, index) => {
-            return (
-                <Product key={index}
-                    title={product.name}
-                    price={product.price}
-                    stars={product.stars}
-                    retailer={product.retailer}
-                    imageUrl={product.imageUrl}
-                    link={product.link}
-                />
-            )
-        })
+    const renderManufacturersCheckboxes = () => {
+        if (manufactures !== null) {
+            return manufactures.map((manufacturer, index) => {
+                return (
+                    <span key={index}>
+                        <input type="checkbox"
+                            name={manufacturer}
+                            value={manufacturer}
+                        /> {manufacturer}
+                    </span>
+                )
+            })
+        }
     }
 
     useEffect(() => {
+
+        const fetchData = async () => {
+            const price = await axios(`${baseUrl}/meta/max`)
+            const allManufacturers = await axios(`${baseUrl}/meta/man`)
+            const initProducts = await axios(`${baseUrl}?mp=4000`)
+
+            setMaxPrice(price.data + 1)
+            setManufacturers(allManufacturers.data)
+            setProducts(initProducts.data)
+            setLoaded(true)
+        }
+
         fetchData()
+
     }, [])
 
+    useEffect(() => {
+        console.debug(queryString)
+        const fetchData = async () => {
+            const filteredProducts = await axios(`${baseUrl}${queryString}`)
+            setProducts(filteredProducts.data)
+        }
 
-    function renderManufacturers() {
-        let uniqueManufacturers = []
-        initialProducts.filter(product => uniqueManufacturers.push(product.manufacturer))
-        uniqueManufacturers = [...new Set(uniqueManufacturers)]
-        return uniqueManufacturers.map((manufacturer, index) => {
-            return (
-                <span key={index}>
-                    <input type="checkbox"
-                        name={manufacturer}
-                        value={manufacturer}
-                    /> {manufacturer}
-                </span>
-            )
-        })
-    }
-
-
-    function applyFilters(e) {
-        e.preventDefault()
-
-        const inputs = document.querySelectorAll('.sidebar .manufacturers input')
-        const manufacturers = Array.from(inputs)
-            .filter(f => f.checked === true)
-            .map(m => m.value)
-
-        const priceLimiter = range
-
-        const limitedData = initialProducts.filter(product => product.price < priceLimiter && manufacturers.includes(product.manufacturer))
-
-        setProducts(limitedData)
-    }
-
+        fetchData()
+    }, [queryString])
 
     return (
-        <section className="hardwares">
+        <section className="mobiles">
 
             <div className="sidebar-container">
                 <aside className="sidebar">
 
                     <div className="category">
-                        <h1>Hadwares</h1>
+                        <h1>Hardware</h1>
                     </div>
                     <hr />
                     <div className="price-range">
-                        <h2>Maximum Price</h2>
+                        <h2>Limite de Preço</h2>
                         R${
                             range
                                 .toString()
@@ -107,7 +101,6 @@ export default function Hardwares() {
                                 .replace(/[0-9](?=(?:[0-9]{3})+(?![0-9]))/g, '$&.')
                         }
                         <input
-                            id="typeinp"
                             type="range"
                             min="0" max={maxPrice}
                             value={range}
@@ -117,22 +110,51 @@ export default function Hardwares() {
                             step="1"
                         />
                     </div>
-                    <hr />
+                    <div className="price-rating">
+                        <h2>Rating do Produto</h2>
+                        <span>☆{rating}</span>
+                        <input
+                            type="range"
+                            min="0" max="5"
+                            value={rating}
+                            onChange={e => {
+                                setRating(e.target.value)
+                            }}
+                            step="1"
+                        />
+                    </div>
                     <div className="manufacturers">
-                        <h2>Manufacturers</h2>
-                        {renderManufacturers()}
+                        <h2>Fabricantes</h2>
+                        {renderManufacturersCheckboxes()}
                     </div>
-                    <hr />
                     <div className="sidebar-btn"
-                        onClick={e => applyFilters(e)}>
-                        Apply
+                        onClick={e => {
+                            let m = Array.from(document.querySelectorAll('.manufacturers input'))
+                            let mChecked = m.filter(f => f.checked === true).map(m => m.value)
+                            let mChumk = ''
+                            mChecked.forEach(e => {
+                                mChumk += `&mn=${e}`
+                            })
+                            let qRange = parseInt(range) === 0 ? '' : `&mp=${parseInt(range)}`
+
+                            // IMPLEMENTAR MAIS ESSES DOIS FILTROS >>>
+                            // let qRating = `&sr=${rating}`
+                            // let qOrderByPrice = `&ol_d=${priceOrder}`
+
+                            let query = `?pl=${pagination}` + qRange + mChumk
+
+
+                            setQueryString(query)
+                        }}>
+                        Aplicar Filtros
                     </div>
+
 
                 </aside>
             </div>
 
             <div className="products-container">
-                {loading
+                {loaded
                     ? renderProduct()
                     : <Spinner className="loading-spinner" animation="border" variant="danger" />
                 }

@@ -7,14 +7,20 @@ import Product from '../templates/Product'
 
 const baseUrl = 'http://localhost:5000/products'
 
-export default function Hardwares() {
+export default function Mobiles() {
 
     const [loaded, setLoaded] = useState(false)
     const [products, setProducts] = useState(null)
     const [manufactures, setManufacturers] = useState(null)
 
+    const [pagination, setPagination] = useState(30)
+    const [rating, setRating] = useState(0)
     const [maxPrice, setMaxPrice] = useState(0)
-    const [range, setRange] = useState(0.00)
+    const [range, setRange] = useState(0)
+
+
+    const [queryString, setQueryString] = useState('')
+
 
 
     const renderProduct = () => {
@@ -48,6 +54,7 @@ export default function Hardwares() {
             })
         }
     }
+
     useEffect(() => {
 
         const fetchData = async () => {
@@ -65,6 +72,16 @@ export default function Hardwares() {
 
     }, [])
 
+    useEffect(() => {
+        console.debug(queryString)
+        const fetchData = async () => {
+            const filteredProducts = await axios(`${baseUrl}${queryString}`)
+            setProducts(filteredProducts.data)
+        }
+
+        fetchData()
+    }, [queryString])
+
     return (
         <section className="mobiles">
 
@@ -76,7 +93,7 @@ export default function Hardwares() {
                     </div>
                     <hr />
                     <div className="price-range">
-                        <h2>Maximum Price</h2>
+                        <h2>Limite de Preço</h2>
                         R${
                             range
                                 .toString()
@@ -84,7 +101,6 @@ export default function Hardwares() {
                                 .replace(/[0-9](?=(?:[0-9]{3})+(?![0-9]))/g, '$&.')
                         }
                         <input
-                            id="typeinp"
                             type="range"
                             min="0" max={maxPrice}
                             value={range}
@@ -94,10 +110,45 @@ export default function Hardwares() {
                             step="1"
                         />
                     </div>
+                    <div className="price-rating">
+                        <h2>Rating do Produto</h2>
+                        <span>☆{rating}</span>
+                        <input
+                            type="range"
+                            min="0" max="5"
+                            value={rating}
+                            onChange={e => {
+                                setRating(e.target.value)
+                            }}
+                            step="1"
+                        />
+                    </div>
                     <div className="manufacturers">
-                        <h2>Manufacturers</h2>
+                        <h2>Fabricantes</h2>
                         {renderManufacturersCheckboxes()}
                     </div>
+                    <div className="sidebar-btn"
+                        onClick={e => {
+                            let m = Array.from(document.querySelectorAll('.manufacturers input'))
+                            let mChecked = m.filter(f => f.checked === true).map(m => m.value)
+                            let mChumk = ''
+                            mChecked.forEach(e => {
+                                mChumk += `&mn=${e}`
+                            })
+                            let qRange = parseInt(range) === 0 ? '' : `&mp=${parseInt(range)}`
+
+                            // IMPLEMENTAR MAIS ESSES DOIS FILTROS >>>
+                            // let qRating = `&sr=${rating}`
+                            // let qOrderByPrice = `&ol_d=${priceOrder}`
+
+                            let query = `?pl=${pagination}` + qRange + mChumk
+
+
+                            setQueryString(query)
+                        }}>
+                        Aplicar Filtros
+                    </div>
+
 
                 </aside>
             </div>

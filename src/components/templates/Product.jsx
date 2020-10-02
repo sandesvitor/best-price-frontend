@@ -53,7 +53,7 @@ export default function Product(props) {
                             .toString()
                             .replace('.', ',')
                             .replace(/[0-9](?=(?:[0-9]{3})+(?![0-9]))/g, '$&.')}`
-                        : "Sem preço no momento"
+                        : "See options on retailer web site!"
                     }
                 </div>
 

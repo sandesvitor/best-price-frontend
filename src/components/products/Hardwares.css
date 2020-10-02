@@ -64,31 +64,3 @@ aside.sidebar .manufacturers {
 aside.sidebar .price-range input {
     width: 280px;
 }
-
-aside.sidebar .sidebar-btn {
-    margin-top: 30px;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-
-    cursor: pointer;
-    box-shadow: 0px 6px 15px -5px #000000;
-
-    font-weight: 400;
-    font-size: 1.3em;
-
-    /* transition: 1s; */
-}
-
-aside.sidebar .sidebar-btn:hover {
-    transition: 0.2s;
-    background-color: var(--forth-background-color);
-}
-
-aside.sidebar .sidebar-btn:active {
-    transform: scale(0.7);
-}
