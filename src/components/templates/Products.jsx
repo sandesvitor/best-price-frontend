@@ -12,8 +12,7 @@ export default function Products(props) {
     const [products, setProducts] = useState(null)
     const [manufactures, setManufacturers] = useState(null)
 
-    const [pagination, setPagination] = useState(30)
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(5)
     const [maxPrice, setMaxPrice] = useState(0)
     const [range, setRange] = useState(0)
 
@@ -59,7 +58,7 @@ export default function Products(props) {
         const fetchData = async () => {
             const price = await axios(`${baseUrl}/meta/max`)
             const allManufacturers = await axios(`${baseUrl}/meta/man`)
-            const initProducts = await axios(`${baseUrl}?mp=4000`)
+            const initProducts = await axios(`${baseUrl}?mp=4000&sr=4&pl=30`)
 
             setMaxPrice(price.data + 1)
             setManufacturers(allManufacturers.data)
@@ -72,6 +71,7 @@ export default function Products(props) {
     }, [])
 
     useEffect(() => {
+        console.log(queryString)
         const fetchData = async () => {
             const filteredProducts = await axios(`${baseUrl}${queryString}`)
             setProducts(filteredProducts.data)
@@ -79,6 +79,20 @@ export default function Products(props) {
 
         fetchData()
     }, [queryString])
+
+    function handleSelectedStars(value) {
+        const stars = document.querySelectorAll('.price-rating .stars')
+        stars.forEach(star => {
+            if (star.getAttribute("value") === value) {
+                star.classList.add('selected')
+            } else {
+                star.classList.remove('selected')
+            }
+
+        })
+
+        setRating(parseInt(value))
+    }
 
     return (
         <section className="products">
@@ -110,22 +124,66 @@ export default function Products(props) {
                     </div>
                     <div className="price-rating">
                         <h2>Rating do Produto</h2>
-                        <span>☆{rating}</span>
-                        <input
-                            type="range"
-                            min="0" max="5"
-                            value={rating}
-                            onChange={e => {
-                                setRating(e.target.value)
-                            }}
-                            step="1"
-                        />
+                        <div className="stars"
+                            value="1"
+                            onClick={() => handleSelectedStars("1")}>
+                            <i className="fas fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                        </div>
+                        <div className="stars"
+                            value="2"
+                            onClick={() => handleSelectedStars("2")}>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                        </div>
+                        <div className="stars"
+                            value="3"
+                            onClick={() => handleSelectedStars("3")}>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="far fa-star"></i>
+                            <i className="far fa-star"></i>
+                        </div>
+                        <div className="stars"
+                            value="4"
+                            onClick={() => handleSelectedStars("4")}>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="far fa-star"></i>
+                        </div>
+                        <div className="stars"
+                            value="5"
+                            onClick={e => handleSelectedStars("5")}>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                        </div>
                     </div>
                     <div className="order-by-price">
                         <h2>Ordenar por preço:</h2>
                         <select name="prices">
                             <option value="desc">Descrescente</option>
                             <option value="asc">Crescente</option>
+                        </select>
+                    </div>
+                    <div className="products-per-page">
+                        <h2>Produtos por Página:</h2>
+                        <select name="productsInPage">
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
                         </select>
                     </div>
                     <div className="manufacturers">
@@ -142,15 +200,22 @@ export default function Products(props) {
                             })
                             let qRange = parseInt(range) === 0 ? '' : `&mp=${parseInt(range)}`
 
-                            let selectedValue = document.querySelector('.order-by-price select').value
-                            let qOrderByPrice = selectedValue === 'desc' ? `&ob_p=0` : `&ob_p=1`
+                            let selectedValueOrderByPrice = document.querySelector('.order-by-price select').value
+                            let qOrderByPrice = selectedValueOrderByPrice === 'desc' ? `&ob_p=0` : `&ob_p=1`
+
+                            let selectedValueProducsPerPage = document.querySelector('.products-per-page select').value
+                            let qProductsPerPage = `pl=${selectedValueProducsPerPage}`
+
+                            let qRating = `&sr=${rating}`
 
                             // IMPLEMENTAR MAIS ESSES DOIS FILTROS >>>
                             // let qRetailer = `&rt=(...)` ---> precisa aplicar array!!! 
-                            // let qRating = `&sr=${rating}`
 
-                            let query = `?pl=${pagination}` + qRange + mChumk + qOrderByPrice
-
+                            let query = `?${qProductsPerPage}`
+                                + qRange
+                                + mChumk
+                                + qOrderByPrice
+                                + qRating
 
                             setQueryString(query)
                         }}>
