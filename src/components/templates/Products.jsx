@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Products.css';
 import axios from 'axios'
-import { Spinner } from 'react-bootstrap'
+import { Spinner, Pagination } from 'react-bootstrap'
 
 import Product from './Product'
 
@@ -9,9 +9,10 @@ export default function Products(props) {
     const baseUrl = props.baseUrl
 
     const [loaded, setLoaded] = useState(false)
-    const [products, setProducts] = useState(null)
+    const [productsData, setProductsData] = useState({})
     const [manufactures, setManufacturers] = useState(null)
 
+    const [page, setPage] = useState(1)
     const [rating, setRating] = useState(5)
     const [maxPrice, setMaxPrice] = useState(0)
     const [range, setRange] = useState(0)
@@ -22,8 +23,8 @@ export default function Products(props) {
 
 
     const renderProduct = () => {
-        if (products !== null) {
-            return products.map((product, index) => {
+        if (productsData.results !== null) {
+            return productsData.results.map((product, index) => {
                 return (
                     <Product key={index}
                         title={product.name}
@@ -55,29 +56,30 @@ export default function Products(props) {
 
     useEffect(() => {
 
-        const fetchData = async () => {
+        const fetchInicialProducts = async () => {
+            setLoaded(false)
             const price = await axios(`${baseUrl}/meta/max`)
             const allManufacturers = await axios(`${baseUrl}/meta/man`)
-            const initProducts = await axios(`${baseUrl}?mp=3500&sr=4&pl=30`)
+            const initProducts = await axios(`${baseUrl}?mp=3500&sr=4&pl=30&pg=2`)
 
             setMaxPrice(price.data + 1)
             setManufacturers(allManufacturers.data)
-            setProducts(initProducts.data)
+            setProductsData(initProducts.data)
             setLoaded(true)
         }
 
-        fetchData()
+        fetchInicialProducts()
 
     }, [])
 
     useEffect(() => {
-        console.log(queryString)
-        const fetchData = async () => {
+        console.info(productsData)
+        const fetchFilteredProducts = async () => {
             const filteredProducts = await axios(`${baseUrl}${queryString}`)
-            setProducts(filteredProducts.data)
+            setProductsData(filteredProducts.data)
         }
 
-        fetchData()
+        fetchFilteredProducts()
     }, [queryString])
 
     function handleSelectedStars(value) {
@@ -231,8 +233,24 @@ export default function Products(props) {
                     ? renderProduct()
                     : <Spinner className="loading-spinner" animation="border" variant="danger" />
                 }
-            </div>
+                <Pagination>
+                    <Pagination.First />
+                    <Pagination.Prev />
+                    <Pagination.Item>{1}</Pagination.Item>
+                    <Pagination.Ellipsis />
 
+                    <Pagination.Item>{10}</Pagination.Item>
+                    <Pagination.Item>{11}</Pagination.Item>
+                    <Pagination.Item>{12}</Pagination.Item>
+                    <Pagination.Item active>{13}</Pagination.Item>
+                    <Pagination.Item disabled>{14}</Pagination.Item>
+
+                    <Pagination.Ellipsis />
+                    <Pagination.Item>{20}</Pagination.Item>
+                    <Pagination.Next />
+                    <Pagination.Last />
+                </Pagination>
+            </div>
 
         </section>
     )
