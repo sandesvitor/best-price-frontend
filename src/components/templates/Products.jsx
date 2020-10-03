@@ -73,6 +73,7 @@ export default function Products(props) {
     }, [])
 
     useEffect(() => {
+        console.info(queryString)
         console.info(productsData)
         const fetchFilteredProducts = async () => {
             const filteredProducts = await axios(`${baseUrl}${queryString}`)
